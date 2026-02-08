@@ -8,6 +8,7 @@ import ru.sicampus.bootcamp2026.dto.MeetingDTO;
 import ru.sicampus.bootcamp2026.entity.Meeting;
 import ru.sicampus.bootcamp2026.entity.User;
 import ru.sicampus.bootcamp2026.exception.MeetingNotFoundException;
+import ru.sicampus.bootcamp2026.exception.MeetingOverlapException;
 import ru.sicampus.bootcamp2026.exception.UserNotFoundException;
 import ru.sicampus.bootcamp2026.repository.MeetingRepository;
 import ru.sicampus.bootcamp2026.repository.UserRepository;
@@ -38,6 +39,10 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public MeetingDTO createMeeting(MeetingDTO dto) {
+        if (!meetingRepository.findByDateAndStartHour(dto.getDate(), dto.getStartHour()).isEmpty()) {
+            throw new MeetingOverlapException("На это время уже запланирована встреча!");
+        }
+
         User organizer = userRepository.findById(dto.getOrganizerId())
                 .orElseThrow(() -> new UserNotFoundException("Organizer not found"));
 

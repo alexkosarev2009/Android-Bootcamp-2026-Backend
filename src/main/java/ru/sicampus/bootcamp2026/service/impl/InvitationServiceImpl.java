@@ -47,6 +47,10 @@ public class InvitationServiceImpl implements InvitationService {
         User invitee = userRepository.findById(dto.getInviteeId())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
+        if (meeting.getOrganizer().getId() == invitee.getId()) {
+            throw new IllegalArgumentException("Организатор не может пригласить сам себя на мероприятие.");
+        }
+
         Invitation invitation = new Invitation();
         invitation.setMeeting(meeting);
         invitation.setInvitee(invitee);

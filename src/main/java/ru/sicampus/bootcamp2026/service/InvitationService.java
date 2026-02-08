@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.service;
 
 import ru.sicampus.bootcamp2026.dto.InvitationDTO;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

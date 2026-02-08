@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 import ru.sicampus.bootcamp2026.dto.UserDTO;
 import ru.sicampus.bootcamp2026.dto.UserRegistrationDTO;
 import ru.sicampus.bootcamp2026.service.UserService;
@@ -46,6 +47,13 @@ public class UserController {
         UserDTO currentUser = userService.getUserByEmail(email);
         return ResponseEntity.ok(userService.updateUser(currentUser.getId(), dto));
 
+    }
+
+    @PostMapping("/upload-pfp")
+    public ResponseEntity<UserDTO> uploadPfp(Authentication authentication, @RequestParam("file") MultipartFile file) {
+        String email = authentication.getName();
+        UserDTO currentUser = userService.getUserByEmail(email);
+        return ResponseEntity.ok(userService.uploadPfp(currentUser.getId(), file));
     }
 
     @PostMapping("/register")
